@@ -1,0 +1,75 @@
+{
+    "metrics": {
+        "maintainability_index": 78,
+        "functions": [
+            {
+                "name": "calculate_average",
+                "start": 1,
+                "end": 6,
+                "doc": true
+            },
+            {
+                "name": "add",
+                "start": 9,
+                "end": 11,
+                "doc": true
+            },
+            {
+                "name": "find_max",
+                "start": 15,
+                "end": 28,
+                "doc": true
+            },
+            {
+                "name": "is_even",
+                "start": 31,
+                "end": 32,
+                "doc": false
+            },
+            {
+                "name": "process",
+                "start": 38,
+                "end": 42,
+                "doc": false
+            }
+        ]
+    },
+    "coverage_report": {
+        "total_functions": 5,
+        "documented_functions": 3,
+        "undocumented_functions": 2,
+        "coverage_percent": 60.0,
+        "details": [
+            {
+                "name": "calculate_average",
+                "start": 1,
+                "end": 6,
+                "doc": true
+            },
+            {
+                "name": "add",
+                "start": 9,
+                "end": 11,
+                "doc": true
+            },
+            {
+                "name": "find_max",
+                "start": 15,
+                "end": 28,
+                "doc": true
+            },
+            {
+                "name": "is_even",
+                "start": 31,
+                "end": 32,
+                "doc": false
+            },
+            {
+                "name": "process",
+                "start": 38,
+                "end": 42,
+                "doc": false
+            }
+        ]
+    }
+}
