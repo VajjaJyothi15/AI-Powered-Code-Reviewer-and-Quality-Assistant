@@ -136,4 +136,4 @@ This project demonstrates:
 
 ## Author
 
-**Jyothi**
+**Jyothi Sri Sai Lakshmi Vajja**
