@@ -1,4 +1,4 @@
-"""Streamlit app for scanning Python files and validating PEP 257 docstrings."""
+﻿"""Streamlit app for scanning Python files and validating PEP 257 docstrings."""
 import os
 import ast
 import re
