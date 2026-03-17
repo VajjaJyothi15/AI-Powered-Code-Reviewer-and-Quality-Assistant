@@ -29,6 +29,7 @@ view = st.sidebar.selectbox(
 
 path_to_scan = st.sidebar.text_input("Path to scan", "examples")
 output_path = st.sidebar.text_input("Output JSON path", "storage/review_logs.json")
+output_dir = os.path.dirname(output_path) if output_path else ""
 
 python_files = []
 if os.path.exists(path_to_scan):
@@ -90,7 +91,8 @@ if view == "Metrics":
        st.session_state.metrics_scanned = True
        st.session_state.metrics_result = result
    
-
+       if output_dir:
+           os.makedirs(output_dir, exist_ok=True)
        with open(output_path, "w", encoding="utf-8") as f:
            json.dump({"metrics": result}, f, indent=4)
 
@@ -121,6 +123,8 @@ if view == "Metrics":
            st.subheader("Function-wise Docstring Status")
            st.table(report["details"])
 
+           if output_dir:
+               os.makedirs(output_dir, exist_ok=True)
            with open(output_path, "w", encoding="utf-8") as f:
                json.dump(
                    {
@@ -195,5 +199,7 @@ elif view == "Summary Report":
 
    st.json(summary)
 
+   if output_dir:
+       os.makedirs(output_dir, exist_ok=True)
    with open(output_path, "w", encoding="utf-8") as f:
        json.dump({"summary_report": summary}, f, indent=4)
