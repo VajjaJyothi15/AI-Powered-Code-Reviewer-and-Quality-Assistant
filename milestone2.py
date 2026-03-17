@@ -307,7 +307,16 @@ def parse_pydocstyle_violations(lines):
 
     return violations
 
-def get_ast_pep257_violations(tree):
+def _has_blank_line_after_docstring(lines, doc_expr):
+    """Return True if there's a blank line immediately after the docstring."""
+    if not doc_expr or not hasattr(doc_expr, "end_lineno"):
+        return False
+    idx = doc_expr.end_lineno
+    if idx is None or idx >= len(lines):
+        return False
+    return lines[idx].strip() == ""
+
+def get_ast_pep257_violations(tree, source_lines=None):
     """Collect AST-based PEP 257 violations for module, classes, and functions."""
     violations = []
 
@@ -328,6 +337,10 @@ def get_ast_pep257_violations(tree):
             else:
                 for rule in check_format_rules(doc):
                     violations.append((node.name, rule))
+                if source_lines:
+                    doc_expr = _get_docstring_expr(node)
+                    if _has_blank_line_after_docstring(source_lines, doc_expr):
+                        violations.append((node.name, "D202: No blank lines allowed after docstring"))
 
         if isinstance(node, ast.FunctionDef):
             parent = getattr(node, "parent", None)
@@ -339,23 +352,46 @@ def get_ast_pep257_violations(tree):
                 else:
                     for rule in check_format_rules(doc):
                         violations.append((node.name, rule))
+                    if source_lines:
+                        doc_expr = _get_docstring_expr(node)
+                        if _has_blank_line_after_docstring(source_lines, doc_expr):
+                            violations.append((node.name, "D202: No blank lines allowed after docstring"))
             else:
                 if not doc:
                     violations.append((node.name, "D103: Missing function docstring"))
                 else:
                     for rule in check_format_rules(doc):
                         violations.append((node.name, rule))
+                    if source_lines:
+                        doc_expr = _get_docstring_expr(node)
+                        if _has_blank_line_after_docstring(source_lines, doc_expr):
+                            violations.append((node.name, "D202: No blank lines allowed after docstring"))
 
     return violations
 
 def get_pep257_violations(tree, file_path=None):
     """Collect PEP 257 violations using AST checks plus pydocstyle when available."""
-    ast_violations = get_ast_pep257_violations(tree)
+    source_lines = None
+    if file_path:
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                source_lines = f.read().splitlines(keepends=True)
+        except FileNotFoundError:
+            source_lines = None
+
+    ast_violations = get_ast_pep257_violations(tree, source_lines=source_lines)
     if not file_path:
         return ast_violations
 
     pydocstyle_lines = run_pydocstyle(file_path)
-    pydocstyle_violations = parse_pydocstyle_violations(pydocstyle_lines)
+    pydocstyle_violations = []
+    for item_name, rule in parse_pydocstyle_violations(pydocstyle_lines):
+        rule_code = rule.split(":", 1)[0].strip()
+        # The app enforces no blank line after docstrings for consistency.
+        # Ignore pydocstyle's class-blank-line rule to avoid conflicting guidance.
+        if rule_code == "D204":
+            continue
+        pydocstyle_violations.append((item_name, rule))
     if not pydocstyle_violations:
         return ast_violations
 
