@@ -1,0 +1,12 @@
+.venv/
+ai_powered/
+__pycache__/
+.pytest_cache/
+tests/.pytest_cache/
+pytest-cache-files-*/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
