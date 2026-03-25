@@ -21,13 +21,18 @@ The project is developed in **four milestones**, each implementing a different f
   - reStructuredText (reST)
 
 ---
-## 🛠 Technologies Used
+## Tools, Libraries, Frameworks & Technologies
 
-- **Python**
-- **Streamlit**
-- **pydocstyle**
-- **pytest**
-- **JSON**
+🔹 Programming Language : Python
+🔹 Framework : Streamlit (for UI)
+🔹 Core Libraries : ast – Code parsing
+                    pydocstyle – Docstring validation
+                    pytest – Testing
+                    json – Data storage
+🔹 Data & Visualization : pandas – Data handling
+                          matplotlib / plotly – Charts & graphs
+🔹 Utilities : subprocess – Running external tools
+               dotenv – Environment variables
 
 ---
 
