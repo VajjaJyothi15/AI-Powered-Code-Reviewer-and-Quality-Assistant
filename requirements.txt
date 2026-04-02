@@ -14,11 +14,5 @@ radon
 pytest-json-report
 plotly
 
-# llama-cpp-python --prefer-binary
 
-
-#pip install -r requirements.txt
- 
-
-# pytest --json-report --json-report-file=storage/reports/pytest_results.json
 
